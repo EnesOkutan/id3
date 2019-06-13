@@ -84,12 +84,32 @@ def id3(data, target):
         node[max_attribute][attr_data] = id3(max_attribute_data[attr_data], max_target_data[attr_data])
     return node
 
+def print_decision(dict):
+    stack = []
+    rules = set()
+    def traverse(node,stack,rules):
+        if 'result' in node:
+            stack.append(' THEN ' + node['result'])
+            rules.add(''.join(stack))
+            stack.pop()
+        else:
+            ifnd = ' IF ' if not stack else ' AND '
+            stack.append(ifnd + list(node)[0] + ' EQUALS ')
+            for subnode_key in node[list(node)[0]]:
+                stack.append(str(subnode_key))
+                traverse(node[list(node)[0]][subnode_key],stack,rules)
+                stack.pop()
+            stack.pop()
+    traverse(dict, stack, rules)
+    print(os.linesep.join(rules))
+
 def main():
     argv = sys.argv
     dataset = load_file(argv[1])
     target = dataset[dataset.keys()[-1]]
     del dataset[dataset.keys()[-1]]
     node = id3(dataset,target)
+    print_decision(node)
 
 if __name__ == "__main__":
     main()
