@@ -30,6 +30,24 @@ def avg_entropy_partitions(partition_data):
     avg_entropy /= total
     return avg_entropy
 
+def partition(data, attribute, target):
+    partition_data = {}
+    target_data = {}
+    indx = 0
+    for element in data[attribute]:
+        if element in partition_data:
+            for attr in data.keys():
+                partition_data[element][attr].append(data[attr][indx])
+        else:
+            partition_data[element] = {}
+            for attr in data.keys():
+                partition_data[element][attr] = list()
+                partition_data[element][attr].append(data[attr][indx])
+            target_data[element] = list()
+        target_data[element].append(target[indx])
+        indx += 1
+    return partition_data, target_data
+
 def main():
     argv = sys.argv
     dataset = load_file(argv[1])
