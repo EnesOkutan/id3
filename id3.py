@@ -21,6 +21,15 @@ def entropy(target):
         ent += - p_x * math.log(p_x,2)
     return ent
 
+def avg_entropy_partitions(partition_data):
+    avg_entropy = 0
+    total = 0
+    for partition in partition_data.values():
+        avg_entropy += entropy(partition) * len(partition)
+        total += len(partition)
+    avg_entropy /= total
+    return avg_entropy
+
 def main():
     argv = sys.argv
     dataset = load_file(argv[1])
