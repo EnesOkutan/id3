@@ -48,6 +48,16 @@ def partition(data, attribute, target):
         indx += 1
     return partition_data, target_data
 
+def common_target(target_data):
+    most_frequent = 0
+    target = target_data[0]
+    for data in target_data:
+        count_data = target_data.count(data)
+        if count_data > most_frequent:
+            most_frequent = count_data
+            target = data
+    return target
+
 def main():
     argv = sys.argv
     dataset = load_file(argv[1])
